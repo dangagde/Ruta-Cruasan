@@ -114,7 +114,7 @@ var map = new mapboxgl.Map({
 	container: 'map',
 	style: 'mapbox://styles/mapbox/streets-v11',
 	center: [-5.986042900992137,37.38719702355517],
-	zoom: 14
+	zoom: 12
 });
 
 for (const feature of geojson.features) {
@@ -135,35 +135,62 @@ for (const feature of geojson.features) {
   }
 
 
-     
-    // Create a popup, but don't add it to the map yet.
-    const popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false
+
+  map.on('load', function() {
+    // Coordenadas de la ruta
+    var coordinates = [
+      [-5.991762524340241, 37.39429296276351],
+      [-5.996193533633623, 37.393367060002944],
+      [-5.996209626885887, 37.39219927681635],
+      [-5.993908291560091, 37.39109114457191],
+      [-5.992347245906594, 37.3898252965034],
+      [-5.98971868108226, 37.389880704440266],
+      [-5.971562965062213, 37.38552987006818],
+      [-5.9811636153168495, 37.37729513457981]
+    ];
+  
+    var route = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'LineString',
+        coordinates: coordinates
+      }
+    };
+  
+    map.addSource('route', {
+      type: 'geojson',
+      data: route
     });
-     
-    map.on('mouseenter', 'places', (e) => {
-    // Change the cursor style as a UI indicator.
-    map.getCanvas().style.cursor = 'pointer';
-     
-    // Copy coordinates array.
-    const coordinates = e.features[0].geometry.coordinates.slice();
-    const description = e.features[0].properties.description;
-     
-    // Ensure that if the map is zoomed out such that multiple
-    // copies of the feature are visible, the popup appears
-    // over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-     
-    // Populate the popup and set its coordinates
-    // based on the feature found.
-    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+  
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: 'route',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': 'blue',
+        'line-width': 3
+      }
     });
-     
-    map.on('mouseleave', 'places', () => {
-    map.getCanvas().style.cursor = '';
-    popup.remove();
+  
+    var bounds = coordinates.reduce(function(bounds, coord) {
+      return bounds.extend(coord);
+    }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+  
+    map.fitBounds(bounds, {
+      padding: 50
     });
-    
+  });
+
+
+ 
+  map.addControl(
+    new MapboxDirections({
+    accessToken: mapboxgl.accessToken
+    }),
+    'bottom-right'
+    );

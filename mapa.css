@@ -3,6 +3,8 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .header{
@@ -14,7 +16,7 @@
 }
 .caja{
     position: fixed;
-    top: 30px;
+    top: 40px;
     background-color: white;
     max-height: 45px;
     max-width: 400px;
