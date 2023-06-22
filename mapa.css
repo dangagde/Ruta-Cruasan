@@ -36,9 +36,11 @@
     font-family: Open Sans;
     font-weight: 700;   
     padding: 10px;
-
-    
 }
+.header.hidden {
+    display: none;
+}
+  
 
 .emoji{
     background-image: url('images/drooling_face.png');
@@ -47,6 +49,23 @@
     height: 30px;
     border-radius: 50%;
 
+}
+
+#myButton{
+    position: fixed;
+    left: 10px;
+    bottom: 30px;
+    background-color: white;
+    max-height: 70px;
+    max-width: 400px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    font-family: sans-serif;
+    padding: 10px;
+    border: 0px;
+    font-size: 24px;
+    font-family: Open Sans;
+    font-weight: 700;
 }
 
 .marker {
@@ -74,5 +93,4 @@
     font-family: 'Montserrat';
     font-style: oblique;
 }
-
 

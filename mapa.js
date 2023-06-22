@@ -187,10 +187,29 @@ for (const feature of geojson.features) {
   });
 
 
- 
-  map.addControl(
-    new MapboxDirections({
-    accessToken: mapboxgl.accessToken
-    }),
-    'bottom-right'
-    );
+
+  const button = document.getElementById('myButton');
+  let directionsControl = null;
+  
+  button.addEventListener('click', function() {
+    if (directionsControl) {
+      // Si el control ya existe, se elimina del mapa
+      map.removeControl(directionsControl);
+      directionsControl = null;
+      button.textContent = 'Direcciones';
+    } else {
+      // Si el control no existe, se crea y se agrega al mapa
+      directionsControl = new MapboxDirections({
+        accessToken: mapboxgl.accessToken
+      });
+      map.addControl(directionsControl, 'top-left');
+      button.textContent = 'Ocultar  Direcciones';
+    }
+  });
+  
+
+const myButton = document.getElementById('myButton');
+const headerDiv = document.querySelector('.header');
+myButton.addEventListener('click', function() {
+  headerDiv.classList.toggle('hidden');
+});
