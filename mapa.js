@@ -200,7 +200,10 @@ for (const feature of geojson.features) {
     } else {
       // Si el control no existe, se crea y se agrega al mapa
       directionsControl = new MapboxDirections({
-        accessToken: mapboxgl.accessToken
+        accessToken: mapboxgl.accessToken,
+        unit: 'metric',
+        profile:'mapbox/walking'
+
       });
       map.addControl(directionsControl, 'top-left');
       button.textContent = 'Ocultar  Direcciones';
